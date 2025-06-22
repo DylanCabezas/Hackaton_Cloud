@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Backend para UTEC Diagram as Code
+
+Resources:
+  # Tabla DynamoDB para usuarios
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: UTECDiagramUsers
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  # Tabla DynamoDB para diagramas
+  DiagramsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: UTECDiagramDiagrams
+      AttributeDefinitions:
+        - AttributeName: diagramId
+          AttributeType: S
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: diagramId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: UserIndex
+          KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+
+  # Bucket S3 para almacenar diagramas
+  DiagramsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "utec-diagram-bucket-${AWS::AccountId}"
+      AccessControl: Private
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins: ["*"]
+            AllowedMethods: ["GET", "PUT", "POST", "DELETE", "HEAD"]
+            AllowedHeaders: ["*"]
+
+  # Lambda de autenticación
+  AuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/auth/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Environment:
+        Variables:
+          SECRET_KEY: "your-secret-key"  # En producción usa Secrets Manager
+      Events:
+        LoginEvent:
+          Type: Api
+          Properties:
+            Path: /login
+            Method: POST
+        SignupEvent:
+          Type: Api
+          Properties:
+            Path: /signup
+            Method: POST
+
+  # Lambda generadora de diagramas
+  DiagramFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/diagram_generator/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref DiagramsBucket
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref DiagramsBucket
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DiagramsTable
+      Events:
+        GenerateEvent:
+          Type: Api
+          Properties:
+            Path: /generate
+            Method: POST
+            Auth:
+              Authorizer: JWT
+              Identity:
+                Header: Authorization
+                ReauthorizeEvery: 3600
+
+Outputs:
+  ApiUrl:
+    Description: "URL del API Gateway"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"

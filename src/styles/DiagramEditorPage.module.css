@@ -1,0 +1,292 @@
+/* src/styles/DiagramEditorPage.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  background-color: #263238;
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.8em;
+}
+
+.contentWrapper {
+  display: flex;
+  flex: 1; /* Permite que los paneles ocupen el espacio restante */
+  padding: 20px;
+  gap: 20px; /* Espacio entre los paneles */
+}
+
+.editorPanel, .diagramPanel {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.editorPanel {
+    width: 50%;
+  flex: 1; /* El panel del editor ocupa el espacio disponible */
+}
+
+.diagramPanel {
+  flex: 1; /* El panel del diagrama también ocupa espacio */
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.label {
+  font-weight: 600;
+  color: #455a64;
+}
+
+.select, .fileInputLabel, .controlButton {
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.select {
+  border: 1px solid #b0bec5;
+  background-color: white;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.fileInput {
+  display: none; /* Oculta el input de archivo real */
+}
+
+.fileInputLabel, .controlButton {
+  background-color: #e0e0e0;
+  border: 1px solid #b0bec5;
+  color: #333;
+  text-align: center;
+  white-space: nowrap; /* Evita que el texto se rompa */
+}
+
+.fileInputLabel:hover, .controlButton:hover {
+  background-color: #d0d0d0;
+}
+
+/* src/styles/DiagramEditorPage.module.css */
+
+.editor {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 100%;
+  min-height: 300px;
+  height: 500px; /* <--- PRUEBA CON UNA ALTURA FIJA AQUÍ TEMPORALMENTE */
+                  /* Si esto funciona, entonces el problema es la cadena de altura flexible. */
+                  /* Si sigue creciendo, el problema es el overflow: hidden en algún lugar. */
+
+  overflow-x: auto !important; /* <--- Fuerza el scroll horizontal */
+  overflow-y: auto !important; /* <--- Fuerza el scroll vertical */
+
+  background-color: #1d2c42;
+  color: #e0e0e0;
+  line-height: 1.5 !important;
+  position: relative;
+  font-size: 16px !important;
+  font-family: '"Fira code", "Fira Mono", monospace';
+}
+
+.editor textarea,
+.editor pre,
+.editor pre code {
+  font-family: inherit !important; /* <--- !important */
+  font-size: inherit !important;   /* <--- !important */
+  line-height: inherit !important; /* <--- !important */
+
+  margin: 0 !important; /* <--- Añade !important */
+  padding: 0 !important; /* <--- Añade !important */
+  border: 0 !important; /* <--- Añade !important */
+  background: none !important; /* <--- Añade !important */
+  box-sizing: border-box !important; /* <--- Añade !important */
+
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  tab-size: 4 !important; /* <--- Añade !important */
+
+  min-width: 0 !important; /* <--- Añade !important */
+  width: max-content !important; /* <--- Añade !important */
+  height: 100% !important; /* <--- Añade !important */
+  /* ¡CRÍTICO! Asegúrate de que no haya un overflow: hidden; aquí. */
+  /* Si aún hay override, podemos probar overflow: auto !important; pero lo ideal es que venga del padre. */
+}
+
+/* Estilos específicos para el textarea (interactivo e invisible) */
+.editor textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important; /* <--- Añade !important */
+  height: 100% !important; /* <--- Añade !important */
+  resize: none !important; /* <--- Añade !important */
+  color: transparent !important; /* <--- Añade !important */
+  caret-color: #fff !important; /* <--- Añade !important */
+  z-index: 1 !important; /* <--- Añade !important */
+  outline: none !important; /* <--- Añade !important */
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background: none !important; /* <--- Asegura que no tenga fondo propio */
+}
+
+.generateButton {
+  background-color: #28a745; /* Botón verde */
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+  align-self: flex-end; /* Alinea el botón a la derecha dentro del panel */
+}
+
+.generateButton:hover {
+  background-color: #218838;
+}
+
+.diagramTitle {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #263238;
+  text-align: center;
+}
+
+.diagramDisplay {
+  flex: 1; /* El área de visualización ocupa el espacio restante */
+  border: 1px solid #b0bec5;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto; /* Permite scroll si el diagrama es grande */
+  background-color: #fafafa;
+}
+
+.diagramImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Asegura que la imagen se ajuste sin distorsionarse */
+}
+
+.noDiagramMessage {
+  color: #78909c;
+  text-align: center;
+}
+
+.exportControls {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.exportButton {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+}
+
+.exportButton:hover {
+  background-color: #0056b3;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 900px) {
+  .contentWrapper {
+    flex-direction: column; /* Apila los paneles en pantallas pequeñas */
+    padding: 15px;
+    gap: 15px;
+  }
+  .editorPanel, .diagramPanel {
+    width: 100%; /* En modo columna, cada panel debería ocupar el 100% del ancho disponible */
+    padding: 15px;
+  }
+  .generateButton {
+    align-self: stretch; /* Botón de ancho completo en pantallas pequeñas */
+  }
+}
+
+@media (max-width: 500px) {
+  .header {
+    padding: 10px 15px;
+  }
+  .title {
+    font-size: 1.5em;
+  }
+  .controls {
+    flex-direction: column; /* Apila los controles */
+    align-items: stretch;
+  }
+  .select, .fileInputLabel, .controlButton {
+    width: 100%; /* Controles de ancho completo */
+  }
+  .exportControls {
+    flex-wrap: wrap;
+  }
+}
+
+/* Añade esto en src/styles/DiagramEditorPage.module.css */
+.logoutButton {
+  background-color: #dc3545; /* Rojo para logout */
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+  position: absolute; /* Posiciona el botón */
+  right: 20px; /* A la derecha */
+  top: 50%; /* Centrado verticalmente */
+  transform: translateY(-50%); /* Ajuste fino para centrado vertical */
+}
+
+.logoutButton:hover {
+  background-color: #c82333;
+}
+
+/* Ajustar el header para que el botón tenga espacio */
+.header {
+  position: relative; /* Necesario para que position: absolute funcione en el botón */
+  display: flex; /* Para centrar el título si no hay botón, o alinear si lo hay */
+  justify-content: center; /* Centra el título */
+  align-items: center; /* Centra verticalmente los items */
+}

@@ -1,0 +1,68 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+dist-ssr/
+build/ # Común para React builds
+
+# Local development files
+.local
+.env.local
+.env.*.local
+.env # Archivo .env si lo usas para variables de entorno
+*.env # Otros archivos .env
+
+# Editor directories and files
+.vscode/ # Ignora la carpeta .vscode completa
+!.vscode/extensions.json # Excepto este archivo si quieres compartir extensiones recomendadas
+.idea/ # Directorio de configuración de IntelliJ/WebStorm
+.DS_Store # Archivos de macOS
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+thumbs.db # Miniaturas de Windows
+
+# npm / yarn caches
+.npm/
+.yarn/
+.pnpm-store/
+
+# Misc
+.cache/
+*.tgz
+.eslintcache
+.stylelintcache
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+
+# Vercel / Netlify
+.vercel/
+.netlify/
+
+# Firebase
+.firebase/
+firebase-debug.log
+
+# Testing coverage reports
+coverage/
+.nyc_output/
+
+# IDE-specific (puedes agregar más si usas otros IDEs)
+*.iml # IntelliJ IDEA project files
+.project # Eclipse project files
+.classpath # Eclipse project files
+.settings/ # Eclipse settings
